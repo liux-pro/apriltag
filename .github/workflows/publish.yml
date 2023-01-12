@@ -1,0 +1,29 @@
+name: Push component to https://components.espressif.com
+on:
+  push:
+    tags:
+      - v*
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: test build
+        run: docker run --rm -v $PWD:/project -w /project espressif/idf:v5.0 bash -c "idf.py build"
+  upload_components:
+#    只有上边构建成功了，才会发包
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+      - name: Upload component to the component registry
+        uses: espressif/upload-components-ci-action@v1
+        with:
+          version: ${{ github.ref_name }}
+          directories: "components/apriltag"
+          namespace: "liux-pro"
+          api_token: ${{ secrets.IDF_COMPONENT_API_TOKEN }}
