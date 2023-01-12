@@ -1,0 +1,16 @@
+# 检测代码能否正常编译
+
+name: Build
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: test build
+        run: docker run --rm -v $PWD:/project -w /project espressif/idf:v5.0 bash -c "idf.py build"
