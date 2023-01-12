@@ -12,5 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
       - name: test build
         run: docker run --rm -v $PWD:/project -w /project espressif/idf:v5.0 bash -c "idf.py build"
