@@ -7,4 +7,4 @@ idf_component_register(SRCS ${APRILTAG_SRCS} ${TAG_FILES}  ${COMMON_SRC}
         INCLUDE_DIRS "apriltag"
         )
 
-target_compile_options(${COMPONENT_LIB} PUBLIC -w)
+target_compile_options(${COMPONENT_LIB} PRIVATE -w)
